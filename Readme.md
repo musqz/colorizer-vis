@@ -22,7 +22,7 @@
     Only visualizer `Spectrum` supported.
   
     
-Based on `colorizer-cava`, original work by @napcok .
+Based on `colorizer-cava`, original work by ([@napcok Mabox developer](https://github.com/Mabox-Linux))
     
 # Installation:
 
