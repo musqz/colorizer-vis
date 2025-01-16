@@ -8,8 +8,6 @@
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝  Community: 
                                             
 ```
-[@musqz mabox forum.](https://forum.maboxlinux.org/t/colorizer-vis-finally-control-audio-visualizer/1806)
-
 # Menu for Cli-visualizer.(vis) <img src="image/vis.png" width="233" />
 ### Fork colorizer-cava. Mabox originals.
 
@@ -108,4 +106,4 @@ Add line:
 menu_halign="center"
 ```
 
-
+[@musqz mabox forum.](https://forum.maboxlinux.org/t/colorizer-vis-finally-control-audio-visualizer/1806)
