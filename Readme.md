@@ -12,7 +12,7 @@
 ```
 [@musqz mabox forum.](https://forum.maboxlinux.org/t/colorizer-vis-finally-control-audio-visualizer/1806)
 
-# Menu for Cli-visualizer.(vis) ![vis](image/vis.png){ width=233px }
+# Menu for Cli-visualizer.(vis) <img src="image/vis.png" width="233" />
 ### Fork colorizer-cava. Mabox originals.
 
 ### Features:
@@ -54,12 +54,11 @@ Quick run:
 ```
 colorizer-vis -s > /dev/null
 ```
+<img src="image/colorizer-vis.png" width="560" />
 
-![colorizer](image/colorizer-vis.png){ width=590px } 
+<img src="image/randomcolor.png" width="560" />
 
-![randomcolor](image/randomcolor.png){ width=590px }
-
-![character](image/character.png){ width=590px } 
+<img src="image/character.png" width="560" />
 
 
 ---
