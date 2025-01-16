@@ -1,0 +1,328 @@
+#!/bin/bash
+
+## Script used by `colorizer-vis`
+
+CONFIG_DIR="$HOME/.config/vis"
+COLOR_DIR="$CONFIG_DIR/colors"
+VIS_CNFG="$CONFIG_DIR/mb-vis-config"
+COLORS_FILE="$CONFIG_DIR/colors/mb-vis-colors"
+SCHEME_DIR="$CONFIG_DIR/colors"
+CNFG_AMOUNT="$CONFIG_DIR/.amount"
+
+
+# Make config directory if not exist
+mkdir -p $CONFIG_DIR
+
+# Make colors directory if not exist
+mkdir -p $CONFIG_DIR/colors
+
+FILE_NAME="custom_colors"
+
+source <(grep = "$VIS_CNFG")
+source <(grep = "$CNFG_AMOUNT")
+source "$COLORS_FILE"
+
+# If .amount not exist create with defaults
+if [ ! -f $CNFG_AMOUNT ]; then
+cat <<EOF > ${CNFG_AMOUNT}
+amount_colors=3
+gradient=true
+EOF
+fi
+
+pickone() {
+
+    # Extract existing gradient value from a scheme file (assuming the first file in the directory)
+    existing_scheme=$(find "$SCHEME_DIR" -type f | head -n 1)
+
+    if [[ -f "$existing_scheme" ]]; then
+        # Read gradient value from the file
+        gradient=$(grep -m 1 'gradient=' "$existing_scheme" | cut -d '=' -f2)
+    fi
+
+    for scheme in "$SCHEME_DIR"/*; do
+        if [[ -f "$scheme" ]]; then
+            # Source each file
+            source <(grep = "$scheme")
+        else
+            notify-send -i emblem-warning -t 500 "Error creating source scheme's"
+        fi
+    done
+
+    while true; do
+        # Use gpick to select a color
+        picker=${picker:-gpick}
+        command="gpick -pso 2>/dev/null"
+        color="$(${command})"
+
+        if [[ $? -eq 0 && -n "$color" ]]; then
+            echo "$color" > "$RECENT".tmp
+            # Deduplicate and add to the recent colors
+            awk '!x[$0]++' "$RECENT" >> "$RECENT".tmp
+            awk '!x[$0]++' "$RECENT".tmp > "$RECENT"
+            echo "$color" >> "/tmp/$FILE_NAME"
+        else
+            if [ $(wc -l < "/tmp/$FILE_NAME") -gt 0 ]; then
+                new_name=$(yad --title="Save Colors" \
+                    --entry \
+                    --text="Enter Scheme Name:" \
+                    --width="350" \
+                    --center \
+                    --button="Ok:0" \
+                    --button="Cancel:1")
+
+                if [ ! -z "$new_name" ]; then
+                    COLORS_FILE="$COLOR_DIR/$new_name"
+
+                    # Add gradient value at the top of the file
+                    echo "gradient=$gradient" > "$COLORS_FILE"
+
+                    # Append the selected colors to the new file
+                    cat "/tmp/$FILE_NAME" >> "$COLORS_FILE"
+
+                    rm "/tmp/$FILE_NAME"
+                    notify-send --title="Success" --text="File saved as $new_name."
+                else
+                    rm "/tmp/$FILE_NAME"
+                    notify-send --title="Error" --text="File name cannot be empty."
+                fi
+            else
+                notify-send --title="Error" --text="No colors selected."
+            fi
+            break
+        fi
+    done
+}
+
+# Pick colors   
+pick_colors() {
+
+# Extract existing gradient value from a scheme file (assuming the first file in the directory)
+existing_scheme=$(find "$SCHEME_DIR" -type f | head -n 1)
+
+if [[ -f "$existing_scheme" ]]; then
+    # Read gradient value from the file
+    gradient=$(grep -m 1 'gradient=' "$existing_scheme" | cut -d '=' -f2)
+fi
+
+for scheme in "$SCHEME_DIR"/*; do
+    if [[ -f "$scheme" ]]; then
+        # Source each file
+        source <(grep = "$scheme")
+    else
+        notify-send -i emblem-warning -t 500 "Error creating source scheme's"
+    fi
+done
+
+while true; do
+    
+    color=$(yad --title="Add Color" \
+        --color  \
+        --text="Select a color:" \
+        --button="Ok:0" --button="Save:2" --button="Cancel:1")
+	
+    exit_status=$?
+
+    if [ $exit_status -eq 0 ]; then
+        echo "$color" >> "/tmp/$FILE_NAME"
+    elif [ $exit_status -eq 2 ]; then
+        if [ $(wc -l < "/tmp/$FILE_NAME") -gt 0 ]; then
+            new_name=$(yad --title="Save Colors" \
+                --entry \
+                --text="Enter Scheme Name:" \
+                --button="Ok:0" --button="Cancel:1" \
+				--center --width="350")
+            
+            if [ ! -z "$new_name" ]; then
+                COLORS_FILE="$COLOR_DIR/$new_name"
+
+                # Add gradient value at the top of the file
+                echo "gradient=$gradient" > "$COLORS_FILE"
+
+                # Append the selected colors to the new file
+                cat "/tmp/$FILE_NAME" >> "$COLORS_FILE"
+
+                rm "/tmp/$FILE_NAME"
+                yad --title="Success" --text="File saved as $new_name." --button="Ok:0" --center --width="350"
+            else
+                rm "/tmp/$FILE_NAME"
+                yad --title="Error" --text="File name cannot be empty." --button="Ok:0" --center --width="350"
+            fi
+        else
+            yad --title="Error" --text="No colors selected." --button="Ok:0" --center --width="350"
+        fi
+    else
+        break
+    fi
+done
+}
+
+# toggle gradient
+toggle_gradient() {
+for scheme in "$SCHEME_DIR"/*; do
+    if [[ -f "$scheme" ]]; then
+        # Source each file to read $gradient value
+        source <(grep = "$scheme")
+    else
+        notify-send -t 5000 -i emblem-warning "Error creating source scheme's" "from colors dir"
+    fi
+    
+done
+
+
+# The variable you want to toggle
+VAR_NAME="gradient"
+
+# Toggle the value between true and false
+if [[ "$gradient" == "true" ]]; then
+    NEW_VALUE="false"
+else
+    NEW_VALUE="true"
+fi
+
+for scheme in "$SCHEME_DIR"/*; do
+    if [[ -f "$scheme" ]]; then
+        mb-setvar gradient="$NEW_VALUE" "$scheme"
+    else
+    notify-send -i emblem-warning -t 5000 "Error ...."
+    fi
+done
+
+}
+
+# Random colors
+random_colors() {
+    # Source the amount of colors from the config file if it exists
+    if [[ -f "$CNFG_AMOUNT" ]]; then
+        source "$CNFG_AMOUNT"
+    else
+        amount_colors=1  # Default to 1 color if config file is missing
+        notify-send -i carla -t 500000 -- "Check if $CNFG_AMOUNT exists" 
+    fi
+
+    # Function to generate random colors
+    generate_colors() {
+        # Define a list of predefined colors
+        local colors=(
+            "FF0000" "00FF00" "0000FF" "FFFF00" "00FFFF" "FF00FF" "FFA500" "008000" "800080" "800000"
+            "008080" "808000" "000080" "C0C0C0" "FFFFFF" "FF6347" "00FA9A" "1E90FF" "FFD700" "4B0082"
+            "FF4500" "8A2BE2" "20B2AA" "8B008B" "228B22" "2F4F4F" "B0E0E6" "8B4513" "808080" "4682B4"
+            "BC8F8F" "32CD32" "800000" "00CED1" "9932CC" "FF69B4" "9400D3" "BDB76B" "696969" "008080"
+            "8B0000" "5F9EA0" "A52A2A" "2E8B57" "DAA520" "161a22" "7c3424" "285e2c" "86514a" "9a4e37"
+            "3f72a5" "ce4242" "ea3737" "b7582f" "cf6305" "c46b17" "f44a78" "f94b76" "f94981" "c87720"
+            "23c17f" "27c27f" "857ffb"
+        )
+
+        # Shuffle the list and select the first N colors
+        local shuf_colors=($(shuf -e "${colors[@]}" | head -n "$amount_colors"))
+
+        # Clear the file and write the colors
+        > "$COLORS_FILE"
+        mb-setvar "gradient=true" "$COLORS_FILE"
+        for color in "${shuf_colors[@]}"; do
+            echo "#$color" >> "$COLORS_FILE"
+        done
+    }
+
+    # Call the function to generate colors
+    generate_colors
+}
+
+
+# Reverse Colors
+vis_colors_reverse() {
+# Load the colors.scheme variable from the config file
+colors_scheme=$(grep -oP '(?<=^colors\.scheme=).*' "$VIS_CNFG")
+
+# Validate that colors.scheme is set
+if [[ -z "$colors_scheme" ]]; then
+    echo "Error: colors.scheme is not set in $VIS_CNFG"
+    exit 1
+fi
+
+# Define the target file based on the colors.scheme variable
+file="$SCHEME_DIR/$colors_scheme"
+
+# Check if the colorscheme file exists
+if [[ ! -f "$file" ]]; then
+    echo "Error: Colorscheme file not found: $file"
+    exit 1
+fi
+
+# Extract lines that start with #
+lines=$(grep '^#' "$file")
+
+# Reverse the lines
+reversed_lines=$(echo "$lines" | tac)
+
+# Check if the file currently has the reversed lines
+if [[ "$lines" == "$reversed_lines" ]]; then
+    # If already reversed, write in original order
+    sed -i '/^#/d' "$file"
+    echo "$lines" >> "$file"
+else
+    # If not reversed, write in reversed order
+    sed -i '/^#/d' "$file"
+    echo "$reversed_lines" >> "$file"
+fi
+}
+
+# Give name to scheme
+vis_name() {
+    new_name=$(yad --title="Copy and Rename File" \
+    --entry \
+    --text="New Scheme Name:" \
+    --button="Ok:0" --button="Cancel:1" \
+)
+
+exit_status=$?
+
+if [ $exit_status -eq 0 ]; then
+    # Trim whitespace and special characters
+    new_name=$(echo "$new_name" | tr -cd '[:alnum:]-_')
+    new_file_path="$CONFIG_DIR/colors/$new_name"
+    cp "$COLORS_FILE" "$new_file_path"
+    if [ $? -eq 0 ]; then
+        yad --title="Success" --text="File copied successfully to $new_file_path" --button="Ok:0"
+    else
+        yad --title="Error" --text="Failed to copy file" --button="Ok:0"
+    fi
+fi
+}
+
+# Kill vis
+viskill() {
+	pkill -f vistransparent &
+}
+
+# Start Vis
+visstart() {
+	viskill
+	transparent-vis ${1} ${2} &2>/dev/null &
+}
+
+visreload() {
+    killall -USR1 vis
+    transparent-vis ${1} ${2} &2>/dev/null &
+}
+
+
+
+# Help
+help() {
+    echo -e "\t\tUsage : mb-vis-function <action> \n\t\tactions [help pick_colors  toggle_gradient  random_colors vis_colors_reverse vis_name visstart visreload viskill] "
+    echo -e "\t\tNeeded by colorizer-vis"
+}
+
+case "$1" in
+    pick_colors) pick_colors;;
+    pickone) pickone;;
+    toggle_gradient) toggle_gradient;;
+    random_colors) random_colors;;
+    vis_colors_reverse) vis_colors_reverse;;
+    vis_name) vis_name;;
+    visreload) visreload "$2" "$3";;
+    visstart) visstart "$2" "$3";;
+    viskill) viskill;;
+    -h|--help|help) help;;
+esac

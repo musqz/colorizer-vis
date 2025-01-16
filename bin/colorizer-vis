@@ -1,0 +1,504 @@
+#!/bin/bash
+#    Forked by @musqz for cli-visualizer. 2024 
+
+#    Original colorizer-cava. 
+#    Copyright (C) 2022-2024 Daniel Napora    <napcok@gmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+wmctrl -R vistransparent
+
+me="colorizer-vis -s"
+
+### Edit this line with `right` , ` left` or `center`. To set position of the menu on the screen.###
+menu_halign="left"
+
+
+
+CONFIG_DIR="$HOME/.config/vis"
+VIS_CNFG="$CONFIG_DIR/mb-vis-config"
+CNFG_AMOUNT="$CONFIG_DIR/.amount"
+COLORS_FILE="$CONFIG_DIR/colors/mb-vis-colors"
+SCHEME_DIR="$CONFIG_DIR/colors"
+       
+source <(grep = "$VIS_CNFG")
+source <(grep = "$CNFG_AMOUNT")
+source "$COLORS_FILE"
+
+files=$(find "$SCHEME_DIR" -type f -name "*" | sort)
+
+for scheme in "$SCHEME_DIR"/*; do
+    if [[ -f "$scheme" ]]; then
+        # Source each file
+        source <(grep = "$scheme")
+        # notify-send -t 50 "scheme files sourced"
+    else
+    notify-send -t 50000 "Error creating source scheme's"
+    fi
+    
+done
+
+ if [[ ${gradient} == false ]] ; then
+            gradient='mono'
+            else
+            gradient='gradient'
+        fi
+        
+case "$LANG" in
+	es*)
+	SPACEANDWIDTH="Espaciado y Ancho"
+    BARWIDTH="Ancho de la Barra"
+    BARSPACE="Espaciado de las Barras"
+    COLORING="Coloración Aleatoria"
+    COLORS="Colores"
+    AMOUNTCOLORS="Coloración"
+    CHOOSE="Elige la Cantidad de Colores"
+    RANDOMCOLORS="Colores Aleatorios"
+    ENSTEREO="Habilitar Modo Estéreo"
+    DISSTEREO="Deshabilitar Modo Estéreo"
+    REPEAT="Repetir"
+    AMOUNTCOLOR="Cantidad para el Esquema de Colores"
+    REVERSESCHEME="Revertir Esquema de Colores"
+    GRADIENTMONO="Alternar gradiente|mono [ <b>$gradient</b> ]"
+    SAVE="<b></b>   Guardar Colores Activos como Esquema"
+    CREATE="  Selector de Colores (Yad)"
+    SCHEME="Esquema "
+    COLORSCHEME="Esquemas de Colores"
+    BEHAVE="Comportamiento"
+    FALLOFF="Caída"
+    FALLOFFSTYLE="Estilo de Caída"
+    FALLW="Peso de Caída"
+    FASTFALL="Caída Rápida"
+    SLOWFALL="Caída Lenta"
+    SMOOTH="Suavizado"
+    SMOOTHING="Configuración de Suavizado"
+    FPS="FPS"
+    DEFAULT20="(<i>cuadros por segundo</i>)"
+    CHARACTER="Carácter"
+    STEREO="Estéreo"
+    SCHEME="Esquema"
+    SAVESELECT="Guardar y Seleccionar Esquema"
+    INFO="Consejos y trucos de Vis"
+    INFO_HEAD="Consejos y Trucos de Vis"
+    INFO_TXT="\n \
+    1. Vis se ejecuta en una ventana transparente...\n\n \
+    Puedes <b>mover</b> o <b>redimensionar</b> como cualquier otra ventana\n \
+    - <i>Mover</i>: mantén pulsado <b>Alt</b> y arrastra\n \
+    - <i>Redimensionar</i>: mantén pulsado <b>Alt</b> y arrastra con el botón derecho del ratón\n \
+    - Usa <b>Ctrl+rueda</b> para cambiar el tamaño de la fuente\n \
+    - Usa <b>S</b> para alternar el espectro <i><b>stereo:mono</b></i>\n\n \
+    2. <b>Cómo crear un esquema:</b> \n\n \
+    [<b>Seleccionar color</b>] \n \
+    - Cada <b>clic</b> añade un color al esquema\n \
+    - Pulsa <b>ESC</b> para guardar los colores seleccionados como esquema\n
+    - Pulsa <b>Cancelar</b> para salir de la acción\n\n \
+    [<b>Yad color</b>] \n \
+    - <b>Selecciona</b> tantos colores como desees. Presiona <b>Ok</b>\n \
+    - Pulsa <b>Guardar</b> e introduce el nombre del esquema\n \
+    - Pulsa <b>Cancelar</b> para salir de la acción \ "
+    REVERSED="Invertido"
+    FLIP="Voltear Horizontal"
+    START_VIS="Iniciar Vis"
+    STOP_VIS="Detener Vis"
+    EDITCONF="Editar archivo de configuración"
+    _COLORIZER_ROOT="<b>Colorizador</b> menú principal"
+    PICKCOLOR="  Selecciona Colores con un Solo Clic"
+    CREATESCHEME="Crear Esquema"
+;;
+    pl*)
+    SPACEANDWIDTH="Odstępy i Szerokość"
+    BARWIDTH="Szerokość Paska"
+    BARSPACE="Odstępy Pasków"
+    COLORING="Losowe Kolorowanie"
+    COLORS="Kolory"
+    AMOUNTCOLORS="Kolorowanie"
+    CHOOSE="Wybierz Ilość Kolorów"
+    RANDOMCOLORS="Losowe Kolory"
+    ENSTEREO="Włącz Tryb Stereo"
+    DISSTEREO="Wyłącz Tryb Stereo"
+    REPEAT="Powtarzaj"
+    AMOUNTCOLOR="Ilość dla Schematów Kolorów"
+    REVERSESCHEME="Odwróć Schemat Kolorów"
+    GRADIENTMONO="Przełącz gradient|mono [ <b>$gradient</b> ]"
+    SAVE="<b></b>   Zapisz Aktywne Kolory jako Schemat"
+    CREATE="  Wybór Kolorów (Yad)"
+    SCHEME="Schemat "
+    COLORSCHEME="Schematy Kolorów"
+    BEHAVE="Zachowanie"
+    FALLOFF="Opadanie"
+    FALLOFFSTYLE="Styl Opadania"
+    FALLW="Waga Opadania"
+    FASTFALL="Szybkie Opadanie"
+    SLOWFALL="Wolne Opadanie"
+    SMOOTH="Wygładzenie"
+    SMOOTHING="Ustawienia Wygładzania"
+    FPS="FPS"
+    DEFAULT20="(<i>klatek na sekundę</i>)"
+    CHARACTER="Znak"
+    STEREO="Stereo"
+    SCHEME="Schemat"
+    SAVESELECT="Zapisz i Wybierz Schemat"
+    INFO="Wskazówki &amp; triki Vis"
+    INFO_HEAD="Wskazówki i Triki Vis"
+    INFO_TXT="\n \
+    1. Vis działa w przezroczystym oknie...\n\n \
+    Możesz <b>przesuwać</b> lub <b>zmieniać rozmiar</b> jak każdego innego okna\n \
+    - <i>Przesuwanie</i>: przytrzymaj <b>Alt</b> i przeciągnij\n \
+    - <i>Zmiana rozmiaru</i>: przytrzymaj <b>Alt</b> i przeciągnij prawym przyciskiem myszy\n \
+    - Użyj <b>Ctrl+scroll</b>, aby zmienić rozmiar czcionki\n \
+    - Użyj <b>S</b>, aby przełączać spektrum <i><b>stereo:mono</b></i>\n\n \
+    2. <b>Jak utworzyć schemat:</b> \n\n \
+    [<b>Wybierz kolor</b>] \n \
+    - Każde <b>kliknięcie</b> dodaje kolor do schematu\n \
+    - Naciśnij <b>ESC</b>, aby zapisać wybrane kolory jako schemat\n
+    - Naciśnij <b>Anuluj</b>, aby zakończyć akcję\n\n \
+    [<b>Yad color</b>] \n \
+    - <b>Wybierz</b> dowolną liczbę kolorów, naciskając <b>OK</b>\n \
+    - Naciśnij <b>Zapisz</b> i podaj nazwę schematu\n \
+    - Naciśnij <b>Anuluj</b>, aby zakończyć akcję \ "
+    REVERSED="Odwrócone"
+    FLIP="Przerzuć Poziomo"
+    START_VIS="Uruchom Vis"
+    STOP_VIS="Zatrzymaj Vis"
+    EDITCONF="Edytuj plik konfiguracyjny"
+    _COLORIZER_ROOT="<b>Koloryzator</b> menu główne"
+    PICKCOLOR="  Wybierz Kolory Jednym Kliknięciem"
+    CREATESCHEME="Utwórz Schemat"
+    ;;
+    *)
+    SPACEANDWIDTH="Spacing and Width"
+    BARWIDTH="Bar Width"
+    BARSPACE="Bar Spacing"
+    COLORING="Random Coloring"
+    COLORS="Colors"
+    AMOUNTCOLORS="Coloring"
+    CHOOSE="Choose Amount Of Colors"
+    RANDOMCOLORS="Random Colors"
+    ENSTEREO="Enable Stereo Mode"
+    DISSTEREO="Disable Stereo Mode"
+    REPEAT="Repeat"
+    AMOUNTCOLOR="Amount For Colorscheme"
+    REVERSESCHEME="Reverse Color Scheme"
+    GRADIENTMONO="Toggle gradient|mono [ <b>$gradient</b> ]"
+    SAVE="<b></b>   Save Active Colors As Scheme"
+    CREATE="  Yad color picker"
+    SCHEME="Scheme  "
+    COLORSCHEME="Color Scheme's"
+    BEHAVE="Behaviour"
+    FALLOFF="Falloff "
+    FALLOFFSTYLE="Falloff style"
+    FALLW="Fallweight"
+    FASTFALL="fast fall"
+    SLOWFALL="slow fall"
+    SMOOTH="Smooth"
+	SMOOTHING="Smoothing Settings"
+	FPS="Fps"
+	DEFAULT20="(<i>frames per second</i>)"
+	CHARACTER="Character"
+	STEREO="Stereo"	
+    SCHEME="Scheme "
+    SAVESELECT="Save And Select Scheme"
+    INFO="Vis tips &amp; tricks"    
+    INFO_HEAD="Vis tips & tricks"
+    INFO_TXT="\n \
+    1. <b>Vis runs inside transparent window...</b>\n \
+	So you can <b>move</b> or <b>resize</b> it like any other window\n\n \
+	-<i>Move</i>: hold <b>Alt</b> and drag\n \
+	-<i>Resize</i>: hold <b>Alt</b> and drag with right mouse button\n \
+	- Use <b>Ctrl+wheel</b> to change font size\n \
+	- Use <b>S</b> Toggle Spectrum <i><b>stereo:mono</b></i>\n\n \
+    2. <b>How to create a scheme:</b> \n\n \
+    [<b>Pick color</b>] \n \
+    - Every <b>click</b> is adding a color to the scheme\n \
+    - <b>ESC</b> to save the picked colors as scheme\n \
+    - Press <b>Cancel</b> to quit action\n\n \
+    [<b>Yad color</b>] \n \
+    - <b>Select</b> as many colors as you like. By Pressing <b>Ok</b>\n \
+    - Press <b>Save</b> and give  Scheme_name\n \
+    - Press <b>Cancel</b> to quit action \ "
+    
+	REVERSED="Reversed"
+	FLIP="Flip Horizontal"
+    START_VIS="Start Vis"
+    STOP_VIS="Stop Vis"
+    EDITCONF="Edit config file"
+	_COLORIZER_ROOT="<b>Colorizer</b> rootmenu"
+    PICKCOLOR="  Pick colors with single click"
+    CREATESCHEME="Create scheme"
+    
+    INFOPICK="Info about creating scheme"
+    ;;
+esac
+
+
+getvalues () {
+    visualizer_spectrum_reversed=$(awk -F'=' '/visualizer\.spectrum\.reversed=/ {print $2}' "$VIS_CNFG")
+    colors_scheme=$(awk -F'=' '/colors\.scheme=/ {print $2}' "$VIS_CNFG" )
+    bar_width=$(awk -F'=' '/visualizer\.spectrum\.bar\.width=/ {print $2}' "$VIS_CNFG" )
+    bar_spacing=$(awk -F'=' '/visualizer\.spectrum\.bar\.spacing=/ {print $2}' "$VIS_CNFG" )
+    smoothing_mode=$(awk -F'=' '/visualizer\.spectrum\.smoothing\.mode=/ {print $2}' "$VIS_CNFG" )
+    falloff_mode=$(awk -F'=' '/visualizer\.spectrum\.falloff\.mode=/ {print $2}' "$VIS_CNFG" )
+    falloff_weight=$(awk -F'=' '/visualizer\.spectrum\.falloff\.weight=/ {print $2}' "$VIS_CNFG" )
+    stereo_mode=$(awk -F'=' '/audio\.stereo\.enabled=/ {print $2}' "$VIS_CNFG" )
+    fps=$(awk -F'=' '/visualizer\.fps=/ {print $2}' "$VIS_CNFG" )
+    amount_colors=$(awk -F'=' '/amount_colors=/ {print $2}' "$HOME/.config/vis/.amount" )
+    visualizers=$(awk -F'=' '/visualizers=/ {print $2}' "$VIS_CNFG" )
+    selected_char_spectrum=$(awk -F'=' '/visualizer\.spectrum\.character=/ {print $2}' "$VIS_CNFG" )
+}
+getvalues
+        
+    
+    
+    
+        
+   # if [[ ${visualizer_spectrum_reversed} == false ]] ; then
+#stereo='no'
+  #          else
+   #         stereo='yes'
+    #    fi
+        
+        
+       
+            
+    pgrep -f vistransparent > /dev/null && out+=("<big>󰺢</big>   $STOP_VIS                   ,mb-vis-function  viskill;$me") || out+=("<big>󰺢</big>  $START_VIS                  ,mb-vis-function  visstart;$me")
+    
+    out+=("^sep($SPACEANDWIDTH)")
+    out+=("$BARWIDTH [ <b>${bar_width}</b> ],^checkout(barwidth)")
+    out2+=("^tag(barwidth)")
+    out2+=("^sep($BARWIDTH)")
+    for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 20 25 ; do out2+=("$i,mb-setvar visualizer.spectrum.bar.width=$i $VIS_CNFG;mb-vis-function visstart;$me") ;done
+    
+    out+=("$BARSPACE [ <b>$bar_spacing</b> ],^checkout(barspacing)")
+    out2+=("^tag(barspacing)")
+    out2+=("^sep($BARSPACE)")
+    for i in 0 1 2 3 4 5 6 7 8 9 10 ; do out2+=("$i,mb-setvar visualizer.spectrum.bar.spacing=$i    $VIS_CNFG ; mb-vis-function visstart;$me") ;done
+    
+    out+=("^sep($COLORING)")
+    out+=("$RANDOMCOLORS [ <b>$amount_colors</b> ],^checkout(randomclr)")
+    out2+=("^tag(randomclr)")  
+    out2+=("^sep($AMOUNTCOLORS )")
+    out2+=(" <b>$REPEAT ($amount_colors) $RANDOMCOLORS</b>,mb-setvar colors.scheme=mb-vis-colors $VIS_CNFG ; mb-setvar amount_colors=$amount_colors    ~/.config/vis/.amount ;  ~/bin/mb-vis-function random_colors; mb-vis-function visstart;$me")
+    out2+=("^sep($CHOOSE )")
+    for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 ; do out2+=("$i,mb-setvar colors.scheme=mb-vis-colors $VIS_CNFG ; mb-setvar amount_colors=$i    ~/.config/vis/.amount ;  ~/bin/mb-vis-function random_colors; mb-vis-function visstart;$me") ;done
+       
+    out2+=("^tag(reverse)")
+    out+=("$REVERSESCHEME, mb-vis-function vis_colors_reverse; mb-vis-function visstart;$me")
+    
+    out2+=("^tag(gradient)")
+    out+=("$GRADIENTMONO, mb-vis-function toggle_gradient; mb-vis-function visstart;$me")
+    #out+=("^sep()")
+    
+    out+=("^sep($CREATESCHEME)") 
+    out2+=("^tag(pickone)")
+    out+=("$PICKCOLOR, mb-vis-function pickone; mb-vis-function visstart;$me")
+    out+=("$CREATE,mb-vis-function pick_colors;mb-vis-function visstart;$me")
+    out+=("^sep($SAVESELECT)")
+    out+=("$SAVE,mb-vis-function vis_name;mb-vis-function visstart;$me")
+    
+    #out+=("^sep()") 
+    out+=("$SCHEME [ <b>$colors_scheme</b> ] ,^checkout(scheme)>")
+    out2+=("^tag(scheme)")
+   
+    out2+=("^sep($COLORSCHEME)")
+    for i in $files; do
+    filename=$(basename "$i")  # Extract filename without the path
+    colors=$(grep -oE '^#[A-Fa-f0-9]{6}' "$i" | while read -r color; do
+        echo -n "<span bgcolor='$color'>   </span>"
+    done)
+    out2+=("$filename $colors ,mb-setvar colors.scheme=$filename $VIS_CNFG ;mb-vis-function visstart;$me")
+    done
+    
+    out+=("^sep($BEHAVE)")
+    out+=("$FALLOFF [ <b>$falloff_mode</b> ],^checkout(falloff)")
+    out2+=("^tag(falloff)")
+    out2+=("^sep($FALLOFFSTYLE)")
+    for i in fill top none ; do out2+=("$i,mb-setvar visualizer.spectrum.falloff.mode=$i    $VIS_CNFG ;mb-vis-function visstart;$me") ;done
+    
+    out+=("$FALLW [ <b>$falloff_weight</b> ],^checkout(fallweight)")
+    out2+=("^tag(fallweight")
+    out2+=("^sep(<i>$FASTFALL 0.90 - $SLOWFALL 0.99</i>)")
+    for i in 0.90 0.91 0.92 0.93 0.94 0.95 0.96 0.97 0.98 0.99 ; do out2+=("$i,mb-setvar visualizer.spectrum.falloff.weight=$i    $VIS_CNFG ;mb-vis-function visstart;$me") ;done
+
+    out+=("$SMOOTH [ <b>$smoothing_mode</b> ] ,^checkout(smooth)")
+    
+    out2+=("^tag(smooth)")   
+    out2+=("^sep(<i>$SMOOTHING</i>)") 
+    for i in sgs monstercat none ; do out2+=("$i,mb-setvar visualizer.spectrum.smoothing.mode=$i    $VIS_CNFG ;mb-vis-function visstart;$me") ;done
+        
+    out+=("$FPS [ <b>$fps</b> ],^checkout(fps)")
+    out2+=("^tag(fps)")
+    out2+=("^sep(<i>$DEFAULT20</i>)")
+    for i in 8 9 10 11 12 13 14 15 16 17 18 19 20 21  ; do out2+=("$i,mb-setvar visualizer.fps=$i    $VIS_CNFG ;mb-vis-function visstart;$me") ;done
+ 
+    out+=("$CHARACTER [ <b>$selected_char_spectrum</b> ]  ,^checkout(charspec)")
+    out2+=("^tag(charspec)")
+    out2+=("^sep($CHARACTER)")
+    for i in █ ▀ ▁ ▓ ▒ ░ ◙ ▨ ▚ ▜ ◯ ⦿ ⬤; do out2+=("$i,mb-setvar visualizer.spectrum.character=$i    $VIS_CNFG ;mb-vis-function visstart;$me") ;done
+
+    if [[ ${visualizer_spectrum_reversed} == "false" ]] ; then
+            out+=("Flip Horizontal,mb-setvar visualizer.spectrum.reversed=true    $VIS_CNFG ;mb-vis-function visstart;$me")
+            else
+            out+=("Flip Horizontal,mb-setvar visualizer.spectrum.reversed=false    $VIS_CNFG ;mb-vis-function visstart;$me")
+        fi
+    
+    if [[ ${stereo_mode} == false ]] ; then
+            out+=("$ENSTEREO,mb-setvar audio.stereo.enabled=true    $VIS_CNFG ;mb-vis-function visstart;$me")
+            else
+            out+=("$DISSTEREO,mb-setvar audio.stereo.enabled=false    $VIS_CNFG ;mb-vis-function visstart;$me")
+        fi
+        
+    out+=("^sep(Edit config)")   
+    out+=("   Edit scheme,xdg-open $HOME/.config/vis/colors;$me")    
+    out+=("   $EDITCONF,xdg-open $HOME/.config/vis/mb-vis-config")   
+    out+=("^sep()")
+    out+=("   $INFO,notify-send -i carla -u critical '$INFO_HEAD' '$INFO_TXT';$me")
+   
+    
+
+### RUN
+if [[ "$1" == "-s" ]]; then
+    . /usr/share/mb-jgtools/pipemenu-standalone.cfg
+    . $HOME/.config/mabox/mabox.conf
+    
+    CNF_DIR="$HOME/.config/colorizer"
+    CNF_FILE="$CNF_DIR/colorizer.conf"
+    source "$CNF_FILE"
+
+    out+=("^sep()")
+    out+=(" ${arrow_string_left}    $_COLORIZER_ROOT,colorizer -s")
+    
+    if [[ "$colorizer_size" == "full" ]];then
+    eval $(xdotool getdisplaygeometry --shell)
+    MENU_HEIGHT_MIN="$HEIGHT"
+    MENU_HEIGHT_MAX=$MENU_HEIGHT_MIN
+    jgtools_radius=0
+    menu_margin_x="0"
+    else
+    MENU_VALIGN="center"
+    menu_margin_x=${submenu_spacing:-0}
+    fi
+    
+    MENU_HALIGN="$menu_halign"
+    jgmenu_icon_size=0
+    
+    [ $(pidof picom) ] && MENU_RADIUS=$jgtools_radius
+    [ -z $jgmenu_use_borders ] && menu_border=0
+    JGWIDTH=$((jgtools_padding + 270 + jgtools_padding))
+    MENU_PADDING_TOP=$((jgtools_padding + 150))
+    
+    #WALLPAPER
+    read WALLPATH<<< $(grep file "$HOME"/.config/nitrogen/bg-saved.cfg |  tail -1 | cut -d'=' -f2)
+    THUMBDIR="$HOME/.cache/colorizer/thumbs"
+    mkdir -p ${THUMBDIR}
+    NAME=${WALLPATH////_}
+    if [[ "${NAME}" =~ ^_home_.* ]]; then
+        n=${#HOME}
+        ((n++))
+        NAME=${NAME:${n}}
+    fi
+    THUMB="${THUMBDIR}/${NAME}.png"
+    if [[ ! -f "$THUMB" ]]
+        then
+        convert ${WALLPATH} -resize 270x150^ -gravity center -extent 270x150 ${THUMB}
+    fi
+    
+    mkconfigfile
+
+    # Colors when vistransparent is running
+if pgrep -f vistransparent > /dev/null; then    
+    clr2="#FF0000"    # jumpers
+    clr="#82c2bf"     # bars
+    clr3="#00ffff"
+    clr4="#76eec6"
+    cat <<EOF > ${MENU_ITEMS}
+@icon,,$((jgtools_padding)),$((jgtools_padding)),270,150,4,left,top,,,${THUMB}
+
+
+@rect,,$((jgtools_padding)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding)),$((jgtools_padding+100)),12,50,0,left,top,,${clr} 100,
+@rect,,$((jgtools_padding+20)),$((jgtools_padding+75)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+20)),$((jgtools_padding+115)),12,35,0,left,top,,${clr3} 100,
+@rect,,$((jgtools_padding+40)),$((jgtools_padding+90)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+40)),$((jgtools_padding+124)),12,26,0,left,top,,${clr4} 100,
+@rect,,$((jgtools_padding+60)),$((jgtools_padding+70)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+60)),$((jgtools_padding+114)),12,36,0,left,top,,${clr} 100,
+@rect,,$((jgtools_padding+80)),$((jgtools_padding+55)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+80)),$((jgtools_padding+100)),12,50,0,left,top,,${clr4} 100,
+@rect,,$((jgtools_padding+100)),$((jgtools_padding+35)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+100)),$((jgtools_padding+96)),12,54,0,left,top,,${clr3} 100,
+@rect,,$((jgtools_padding+120)),$((jgtools_padding+15)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+120)),$((jgtools_padding+74)),12,76,0,left,top,,${clr} 100,
+@rect,,$((jgtools_padding+140)),$((jgtools_padding+35)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+140)),$((jgtools_padding+64)),12,86,0,left,top,,${clr3} 100,
+@rect,,$((jgtools_padding+160)),$((jgtools_padding+23)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+160)),$((jgtools_padding+76)),12,74,0,left,top,,${clr4} 100,
+@rect,,$((jgtools_padding+180)),$((jgtools_padding+55)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+180)),$((jgtools_padding+94)),12,56,0,left,top,,${clr} 100,
+@rect,,$((jgtools_padding+200)),$((jgtools_padding+85)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+200)),$((jgtools_padding+114)),12,36,0,left,top,,${clr} 100,
+@rect,,$((jgtools_padding+220)),$((jgtools_padding+105)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+220)),$((jgtools_padding+129)),12,21,0,left,top,,${clr4} 100,
+@rect,,$((jgtools_padding+240)),$((jgtools_padding+89)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+240)),$((jgtools_padding+119)),12,31,0,left,top,,${clr3} 100,
+@rect,,$((jgtools_padding+260)),$((jgtools_padding+80)),10,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+260)),$((jgtools_padding+110)),10,40,0,left,top,,${clr} 100,
+
+@rect,,${jgtools_padding},$((jgtools_padding + 120)),270,28,0,left,top,#222222 20,#222222 95,
+@text,,$((jgtools_padding + 4)),$((jgtools_padding + 120)),120,28,0,left,top,#E95620 ,${WINCLR},<span size='10400' font_family='Ubuntu'><b>Tweak </b>Cli-visualizer</span>
+
+
+$(printf '%s\n' "${out[@]}")
+$(printf '%s\n' "${out2[@]}")
+EOF
+
+else
+    # Colors when vistransparent is not running
+    clr2="#FF0000"      # jumpers
+    
+    cat <<EOF > ${MENU_ITEMS}
+@icon,,$((jgtools_padding)),$((jgtools_padding)),270,150,4,left,top,,,${THUMB}
+
+
+@rect,,$((jgtools_padding)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+20)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+40)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+60)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+80)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+100)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+120)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+140)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+160)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+180)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+200)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+220)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+240)),$((jgtools_padding+80)),12,5,0,left,top,,${clr2} 100,
+@rect,,$((jgtools_padding+260)),$((jgtools_padding+80)),10,5,0,left,top,,${clr2} 100,
+
+@rect,,${jgtools_padding},$((jgtools_padding + 120)),270,28,0,left,top,#222222 20,#222222 70,
+@text,,$((jgtools_padding + 4)),$((jgtools_padding + 120)),120,28,0,left,top,#E95620 ,${WINCLR},<span size='10400' font_family='Ubuntu'><b>Tweak </b>Cli-visualizer</span>
+
+
+$(printf '%s\n' "${out[@]}")
+$(printf '%s\n' "${out2[@]}")
+EOF
+
+
+
+fi
+
+
+    jgmenu --config-file=${CONFIG_FILE} --csv-file=${MENU_ITEMS} 2>/dev/null
+    exit 0
+fi
+

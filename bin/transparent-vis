@@ -1,0 +1,60 @@
+#!/bin/bash
+# transparent-vis.sh
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+##: Usage: transparent-vis.sh (height in pixels) (width full or half).
+##: example transparent-vis.sh 100 half.
+##: original script meant for cava. creator @napcok (gitlab)
+##: default is 300px height and half width.
+
+CONFIG_DIR="$HOME/.config/terminator"
+CONFIG_FILE="$CONFIG_DIR/vis-transparent"
+
+if [ ! -f $CONFIG_FILE ]; then
+cat <<EOF > ${CONFIG_FILE}
+[global_config]
+  dbus = False
+[profiles]
+  [[default]]
+    allow_bold = False
+    background_darkness = 0.0
+    background_type = transparent
+    cursor_blink = False
+    cursor_color = "#aaaaaa"
+    font = Sans 4
+    show_titlebar = False
+    scrollbar_position = hidden
+    scroll_on_keystroke = False
+    custom_command = vis -c $HOME/.config/vis/mb-vis-config
+    use_custom_command = True
+    use_system_font = False
+[layouts]
+[plugins]
+EOF
+fi
+
+VIS_HEIGHT=${1:-300}
+VIS_WIDTH=${2:-half}
+WIDTH=$(wmctrl -d|grep "*"|awk '{print $4}'|cut -d'x' -f1)
+HEIGHT=$(wmctrl -d|grep "*"|awk '{print $4}'|cut -d'x' -f2)
+TOP=$((HEIGHT-VIS_HEIGHT))
+LEFT=0
+if [ "$VIS_WIDTH" != "full" ];then
+LEFT=$((WIDTH/4))
+WIDTH=$((WIDTH/2))
+else
+:
+fi 
+
+terminator -b -g "$CONFIG_FILE" -T vistransparent --geometry "${WIDTH}x${VIS_HEIGHT}+${LEFT}+${TOP}" # -e "vis -c $HOME/.config/vis/mb-vis-config"
