@@ -17,7 +17,7 @@
 
     Easily integrate with Mabox's jgmenu.
 
-    Only visualizer `Spectrum` supported.
+    Only `Spectrum` visiualizer is supported. (fork to add elipese and lorenz)
   
     
 Based on `colorizer-cava`, original work by ([@napcok Mabox developer](https://github.com/Mabox-Linux))
