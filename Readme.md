@@ -71,10 +71,8 @@ Add line:
 
     Visualizer tweaks (vis),colorizer-vis -s,carla
 
-![rightappend](image/RightAppend_mabox.png){ width=500px }
+<img src="image/RightAppend_mabox.png" width="500" />
 
-
-    
 **3. RC Openbox Hotkey Config _(example)_:**
 
 `transparent-vis` (full | half)_width_ (500 | 200 )_height_
