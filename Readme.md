@@ -8,8 +8,12 @@
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝  Community: 
                                             
 ```
-# Menu for Cli-visualizer.(vis) <img src="image/vis.png" width="233" />
+[@musqz mabox forum.](https://forum.maboxlinux.org/t/colorizer-vis-finally-control-audio-visualizer/1806)
+
+# Menu for Cli-visualizer.(vis) ![vis](image/vis.png){ width=233px }
 ### Fork colorizer-cava. Mabox originals.
+
+[Github: colorizer-vis](https://github.com/musqz/colorizer-vis)
 
 ### Features:
 
@@ -17,10 +21,10 @@
 
     Easily integrate with Mabox's jgmenu.
 
-    Only `Spectrum` visualizer is supported. (fork to add ellipse and lorenz)
+    Only visualizer `Spectrum` supported.
   
     
-Based on `colorizer-cava`, original work by ([@napcok Mabox developer](https://github.com/Mabox-Linux))
+Based on `colorizer-cava`, original work by @napcok. ([Mabox developer](https://github.com/Mabox-Linux))
     
 # Installation:
 
@@ -41,7 +45,7 @@ cp bin/* ~/bin
 Copy config files to config directories. 
 
 ```
-cp -rf .config/vis ~/.config/vis` 
+cp -rf .config/vis ~/.config 
 cp .config/terminator/* ~/.config/terminator
 ``` 
 
@@ -50,11 +54,12 @@ Quick run:
 ```
 colorizer-vis -s > /dev/null
 ```
-<img src="image/colorizer-vis.png" width="560" />
 
-<img src="image/randomcolor.png" width="560" />
+![colorizer](image/colorizer-vis.png){ width=590px } 
 
-<img src="image/character.png" width="560" />
+![randomcolor](image/randomcolor.png){ width=590px }
+
+![character](image/character.png){ width=590px } 
 
 
 ---
@@ -71,8 +76,10 @@ Add line:
 
     Visualizer tweaks (vis),colorizer-vis -s,carla
 
-<img src="image/RightAppend_mabox.png" width="500" />
+![rightappend](image/RightAppend_mabox.png){ width=500px }
 
+
+    
 **3. RC Openbox Hotkey Config _(example)_:**
 
 `transparent-vis` (full | half)_width_ (500 | 200 )_height_
@@ -90,8 +97,10 @@ Add line:
 
 **4. Compositor:**
     
-    Picom rules use: match = "name = 'vistransparent'";
-
+Picom rules use: 
+```
+match = "name = 'vistransparent'";
+```
 
 ---
 
@@ -104,4 +113,4 @@ Add line:
 menu_halign="center"
 ```
 
-[@musqz mabox forum.](https://forum.maboxlinux.org/t/colorizer-vis-finally-control-audio-visualizer/1806)
+
