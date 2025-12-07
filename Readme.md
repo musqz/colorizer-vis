@@ -10,7 +10,7 @@
 ```
 [@musqz mabox forum.](https://forum.maboxlinux.org/t/colorizer-vis-finally-control-audio-visualizer/1806)
 
-# Menu for Cli-visualizer.(vis) ![vis](image/vis.png){ width=233px }
+# Menu for Cli-visualizer.(vis) ![vis](image/vis.png)
 ### Fork colorizer-cava. Mabox originals.
 
 [Github: colorizer-vis](https://github.com/musqz/colorizer-vis)
