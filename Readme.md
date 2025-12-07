@@ -55,11 +55,11 @@ Quick run:
 colorizer-vis -s > /dev/null
 ```
 
-![colorizer](image/colorizer-vis.png){ width=590px } 
+![colorizer](image/colorizer-vis.png)
 
-![randomcolor](image/randomcolor.png){ width=590px }
+![randomcolor](image/randomcolor.png)
 
-![character](image/character.png){ width=590px } 
+![character](image/character.png)
 
 
 ---
@@ -76,7 +76,7 @@ Add line:
 
     Visualizer tweaks (vis),colorizer-vis -s,carla
 
-![rightappend](image/RightAppend_mabox.png){ width=500px }
+![rightappend](image/RightAppend_mabox.png)
 
 
     
