@@ -24,7 +24,7 @@
     
 Based on `colorizer-cava`, original work by @napcok. ([Mabox developer](https://github.com/Mabox-Linux))
     
-### Installation Cli-visualizer: DEPRICATED
+#### Installation Cli-visualizer: DEPRICATED
 
 		Install visualizer. [AUR](https://aur.archlinux.org/packages/cli-visualizer-git)
 
@@ -34,7 +34,7 @@ Based on `colorizer-cava`, original work by @napcok. ([Mabox developer](https://
 
 **Use this fork instead:** https://github.com/musqz/cli-visualizer.git
 
-# Installation colorizer-vis
+### Installation colorizer-vis
 
 Make scripts executable and copy to `~/bin` directory.
 
