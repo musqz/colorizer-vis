@@ -13,8 +13,6 @@
 # Menu for Cli-visualizer.(vis) ![vis](image/vis.png)
 ### Fork colorizer-cava. Mabox originals.
 
-[Github: colorizer-vis](https://github.com/musqz/colorizer-vis)
-
 ### Features:
 
     Adjust visualizer settings on-the-fly.
@@ -26,13 +24,17 @@
     
 Based on `colorizer-cava`, original work by @napcok. ([Mabox developer](https://github.com/Mabox-Linux))
     
-# Installation:
+### Installation Cli-visualizer: DEPRICATED
 
-Install visualizer. [AUR](https://aur.archlinux.org/packages/cli-visualizer-git)
+		Install visualizer. [AUR](https://aur.archlinux.org/packages/cli-visualizer-git)
 
-```
-yay cli-visualizer-git
-``` 
+		```
+		yay cli-visualizer-git
+		``` 
+
+**Use this fork instead:** https://github.com/musqz/cli-visualizer.git
+
+# Installation colorizer-vis
 
 Make scripts executable and copy to `~/bin` directory.
 
